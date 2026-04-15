@@ -31,11 +31,25 @@ def ReadData():
     try:
         f = open("BinaryData.txt", "r")
         for line in f:
-            just = Enqueue(line)
+            just = Enqueue(line.strip())
         f.close()
     except FileNotFoundError:
         print("File not found")
 
 def Compress():
     global NewString
-    
+    first = Dequeue()
+    while NumberItems > 0 and first != "False":
+        count = 1
+        nextBit = Dequeue()
+        while nextBit == first:
+            count += 1
+            first = nextBit
+            nextBit = Dequeue()
+        NewString += first + str(count)
+        first = nextBit
+
+# main program
+ReadData()
+Compress()
+print(NewString)
