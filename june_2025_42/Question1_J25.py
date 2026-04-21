@@ -1,29 +1,31 @@
-Stack = ["-1" for i in range(20)] # Array of STRING
+Stack = ["-1" for i in range(20)] # global
 TopOfStack = -1 # global
 
 def Push(par):
     global TopOfStack, Stack
     if TopOfStack >= 19:
-        print(-1)
+        return -1
     else:
-        Stack[TopOfStack+1] = par
         TopOfStack += 1
+        Stack[TopOfStack] = par
         return 1
 
 def Pop():
     global TopOfStack, Stack
     if TopOfStack == -1:
-        print("-1")
+        return "-1"
     else:
-        temp = TopOfStack
+        temp = Stack[TopOfStack]
         TopOfStack -= 1
-        return Stack[temp]
+        return temp
 
-def ReadData(FileName):
+def ReadData(fnameP):
+    global Stack, TopOfStack
     try:
-        f = open(FileName, "r")
+        f = open(fnameP, "r")
         for line in f:
-            if Push(line.strip()) == -1:
+            status = Push(line.strip())
+            if status == -1:
                 print("Stack full")
         f.close()
     except FileNotFoundError:
@@ -31,21 +33,26 @@ def ReadData(FileName):
 
 def Calculate():
     global Stack, TopOfStack
-    total = int(Stack[0])
-    for j in range(len(Stack)-2):
-        if Stack[j+1] == "+":
-            total += int(Stack[j+2])
-        elif Stack[j+1] == "-":
-            total -= int(Stack[j+2])
-        elif Stack[j+1] == "/":
-            total /= int(Stack[j+2])
-        elif Stack[j+1] == "*":
-            total *= int(Stack[j+2])
+    total = int(Pop())
+    flag = True
+    while flag:
+        operator = Pop()
+        number = Pop()
+        if operator == "-1":
+            flag = False
         else:
-            total = total ** int(Stack[j+2])
+            if operator == "+":
+                total += int(number)
+            elif operator == "*":
+                total *= int(number)
+            elif operator == "/":
+                total /= int(number)
+            elif operator == "^":
+                total **= int(number)
+            else:
+                total -= int(number)
     return total
 
-# main program
-file = input("Enter file name: ")
-ReadData(file)
+filename = input("Enter file name: ")
+ReadData(filename)
 print(Calculate())
