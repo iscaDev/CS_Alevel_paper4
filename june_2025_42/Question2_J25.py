@@ -21,7 +21,7 @@ def CalculateHash(keyfield):
 def InsertIntoHash(recordP):
     global HashTable, Spare, PointerOfSpare
     hashvalue = CalculateHash(recordP.Key)
-    if HashTable[hashvalue] == NewRecord(-1, -1, -1):
+    if HashTable[hashvalue].Key == -1:
         HashTable[hashvalue] = recordP
     else:
         Spare[PointerOfSpare] = recordP
