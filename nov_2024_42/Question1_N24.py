@@ -23,12 +23,11 @@ class Character:
         return self.__CharacterName
 
     def CalculateScore(self, typeP, difficultyP):
-        chance = 0
-        if typeP == "Jump":
+        if typeP == "jump":
             chance = self.__Jump
-        elif typeP == "Swim":
+        elif typeP == "swim":
             chance = self.__Swim
-        elif typeP == "Run":
+        elif typeP == "run":
             chance = self.__Run
         else:
             chance = self.__Drive
